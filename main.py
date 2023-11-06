@@ -5,6 +5,7 @@ left_most = 0
 bottom_most = 0
 current_height = 0
 filled_coordinates = []
+
 wn = turtle.Screen()
 rect_turtle = turtle.Turtle()
 rect_turtle.speed(0)
@@ -50,9 +51,8 @@ def choose_box(boxes):
     global current_height
     global left_most
     global bottom_most
-    swapped = False
+    score = []
     for box in boxes:
-        score = []
         pre_score = []
         for j in range(2):
             pre_score.append(0)
@@ -71,24 +71,25 @@ def choose_box(boxes):
             score.append(pre_score[1])
          
     l_idx = 0
-    l_item = boxes[l_idx]
+    l_item = score[l_idx]
     for index, element in enumerate(score):
         if element > l_item:
             l_item = element
             l_idx = index
-    if l_item[1] == 1:
-        l_item
+    return boxes[l_idx]   
 
- 
-def place(box, x, y):
-    global current_height
+def choose_coordinate(box):
+    global current_height 
     global left_most
     global bottom_most
-    
+    global filled_coordinates
+
+    bx = box[0]
+    by = box[1]
+ 
+def place(box, x, y):
     draw(x, y , box[0], box[1])
-    left_most += box[0]
-    if left_most >= 20:
-        left_most = 0
+    
 def pack():
     global current_height
     global left_most
@@ -105,7 +106,8 @@ def pack():
         for boxes in data: 
             box = choose_box(data)
             data.remove(box)
-            place(box, left_most, bottom_most)
+            x, y = choose_coordinate(box)
+            place(box, x, y)
     print(data)
 
 pack()
